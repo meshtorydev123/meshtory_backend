@@ -30,7 +30,7 @@ router.route("/sendsms").post((req, res) => {
          .verifications
          .create({
             to : req.body.phone,
-            channel : "email"
+            channel : "sms"
 
          }
          )
