@@ -31,20 +31,25 @@ router.route("/login").post((req, res) => {
             if (err) return res.status(500).json({
                 msg: err
             });
+            
             if (result === null) {
                 return res.status(403).json("Username incorrect");
             }
-            if (result.password === req.body.password) {
-                let token = jwt.sign({
-                    username: req.body.username
-                }, config.key, {
-                    expiresIn: "24h"
-                });
-                res.json({token :token,
-                msg:"success"});
-            } else {
-                res.status(403).json("Password is incorrect");
-            }
+            bcrypt.compare(req.body.password, result.password, function(errb, resultb) {
+                if ( resultb=== true) {
+                    let token = jwt.sign({
+                        username: req.body.username
+                    }, config.key, {
+                        expiresIn: "24h"
+                    });
+                    res.json({token :token,
+                    msg:"success"});
+                } else {
+                    res.status(403).json("Password is incorrect");
+                }
+                
+            });
+            
         });
 });
 
