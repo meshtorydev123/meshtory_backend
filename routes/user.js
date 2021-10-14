@@ -4,6 +4,9 @@ const router = express.Router();
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 
 router.route("/:username").get(middleware.checkToken, (req, res) => {
     User.findOne({
@@ -47,23 +50,26 @@ router.route("/login").post((req, res) => {
 
 router.route("/register").post((req, res) => {
     console.log("inside the register");
-    const user = new User({
-        name: req.body.name,
-        username: req.body.username,
-        password: req.body.password,
-        email: req.body.email,
-    });
-    user
-        .save()
-        .then(() => {
-            console.log("user registered");
-            res.status(200).json("ok");
-        })
-        .catch((err) => {
-            res.status(403).json({
-                msg: err
-            });
+    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+        const user = new User({
+            name: req.body.name,
+            username: req.body.username,
+            password: hash,
+            email: req.body.email,
         });
+        user
+            .save()
+            .then(() => {
+                console.log("user registered");
+                res.status(200).json("ok");
+            })
+            .catch((err) => {
+                res.status(403).json({
+                    msg: err
+                });
+            });
+    });
+    
 
 });
 
