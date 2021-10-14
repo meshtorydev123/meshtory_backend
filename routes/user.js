@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
+const client = require("twilio")(config.accountSID,config.authToken);
 
 
 router.route("/:username").get(middleware.checkToken, (req, res) => {
@@ -22,6 +23,39 @@ router.route("/:username").get(middleware.checkToken, (req, res) => {
             });
         });
 });
+router.route("/sendsms").post((req, res) => {
+    client
+         .verify
+         .services(config.serviceID)
+         .verifications
+         .create({
+            to : req.body.phone,
+            channel : "email"
+
+         }
+         )
+         .then((data)=>{
+             res.status(200).send(data)
+         })
+    
+});
+router.route("/verifysms").post((req, res) => {
+    client
+         .verify
+         .services(config.serviceID)
+         .verificationChecks
+         .create({
+            to : req.body.phone,
+            code : req.body.code
+
+         }
+         )
+         .then((data)=>{
+             res.status(200).send(data)
+         })
+    
+});
+
 
 router.route("/login").post((req, res) => {
     User.findOne({
