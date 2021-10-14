@@ -79,11 +79,13 @@ router.route("/register").post((req, res) => {
 });
 
 router.route("/update/:username").patch(middleware.checkToken, (req, res) => {
-    User.findOneAndUpdate({
+    bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
+        User.findOneAndUpdate({
             username: req.params.username
         }, {
             $set: {
-                password: req.body.password
+                
+                password: hash,
             }
         },
         (err, result) => {
@@ -97,6 +99,8 @@ router.route("/update/:username").patch(middleware.checkToken, (req, res) => {
             return res.json(msg);
         }
     )
+    });
+    
 });
 
 router.route("/delete/:username").delete(middleware.checkToken, (req, res) => {
