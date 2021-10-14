@@ -36,7 +36,8 @@ router.route("/sendsms").post((req, res) => {
          )
          .then((data)=>{
              res.status(200).send(data)
-         })
+         });
+         
     
 });
 router.route("/verifysms").post((req, res) => {
@@ -52,7 +53,7 @@ router.route("/verifysms").post((req, res) => {
          )
          .then((data)=>{
              res.status(200).send(data)
-         })
+         });
     
 });
 
