@@ -23,6 +23,6 @@ app.use("/user",userRoute);
 
 
 
-app.route("/").get((req, res) => res.json("meshtory day 56"));
+app.route("/").get((req, res) => res.json("meshtory day 556"));
 
 app.listen(port, () => console.log(`your server is running on port ${port}`));
