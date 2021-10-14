@@ -4,7 +4,7 @@ const router = express.Router();
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 
