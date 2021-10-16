@@ -18,9 +18,9 @@ const User = Schema({
         type:String,
 
     },
-    email:{
+    phone:{
         required:true,
-        type:String,
+        type:Number,
 
     }
     
