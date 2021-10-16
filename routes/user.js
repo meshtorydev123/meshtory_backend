@@ -95,7 +95,7 @@ router.route("/register").post((req, res) => {
             name: req.body.name,
             username: req.body.username,
             password: hash,
-            email: req.body.email,
+            phone: req.body.phone,
         });
         user
             .save()
