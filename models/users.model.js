@@ -20,7 +20,7 @@ const User = Schema({
     },
     phone:{
         required:true,
-        type:Number,
+        type:String,
 
     }
     
