@@ -102,6 +102,25 @@ router.route("/register").post((req, res) => {
             .then(() => {
                 console.log("user registered");
                 res.status(200).json("ok");
+
+                User.findOne({
+                    username: req.body.username
+                },
+                (err, result) => {
+                    if (err) return res.status(500).json({
+                        msg: err
+                    });
+                    res.json({
+                        data: result._id,
+                        username: req.body.username
+                    });
+                });
+                
+
+
+                
+
+
             })
             .catch((err) => {
                 res.status(403).json({
