@@ -19,7 +19,23 @@ const User = Schema({
 
     },
     
+    bio:{
+        type:String,
+        default:""
 
+    },
+    website:{
+        type:String,
+        default:""
+
+
+    },
+    profilephoto:{
+        type:String,
+        default:""
+
+
+    },
     phone:{
         required:true,
         type:String,
