@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/users.model");
+const Profile = require("../models/profile.model");
 const router = express.Router();
 const config = require("../config");
 const jwt = require("jsonwebtoken");
@@ -109,11 +110,32 @@ router.route("/register").post((req, res) => {
                     if (err) return res.status(500).json({
                         msg: err
                     });
-                    res.json({
-                        data: result._id,
-                        username: req.body.username
+
+                    const profile = Profile({
+                        name: req.body.name,
+                        username: req.body.username,
+                        uid:result._id,
+                        
                     });
+                    profile.save()
+                    .then(() => 
+                    {
+                        res.status(200).json("ok");
+    
+    
+                    })
+                    .catch((err) => {
+                        res.status(400).json({
+                            err: err
+                        });
+                    });
+                    
+                
+                    
                 });
+
+                
+                
                 
 
 
