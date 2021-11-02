@@ -73,7 +73,7 @@ router.route("/login").post((req, res) => {
             bcrypt.compare(req.body.password, result.password, function(errb, resultb) {
                 if ( resultb=== true) {
                     let token = jwt.sign({
-                        username: req.body.username
+                        uid: result._id
                     }, config.key, {
                         expiresIn: "24h"
                     });
