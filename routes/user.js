@@ -101,7 +101,6 @@ router.route("/register").post((req, res) => {
             .save()
             .then(() => {
                 console.log("user registered");
-                res.status(200).json("ok");
 
                 User.findOne({
                     username: req.body.username
