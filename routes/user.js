@@ -43,15 +43,14 @@ router.route("/update/profilephoto").patch( middleware.checkToken, upload.single
              profilephoto: req.file.location,
         }
     },
+    { new: true },
     (err, user) => {
-        if (err) return res.status(500).json({
-            msg: err
-        });
-        const msg = {
+        if (err) return res.status(500).send(err);
+        const response = {
             msg: "profilephoto updated successfully",
             data: user ,
         };
-        return res.json(msg);
+        return res.status(200).send(response);
     }
 )
     
