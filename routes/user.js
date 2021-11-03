@@ -35,7 +35,7 @@ const upload = multer({
 
 router.route("/update/profilephoto").patch( middleware.checkToken, upload.single("img"), async (req, res) => {
     await User.findOneAndUpdate(
-        {_id: req.decoded.uid}, 
+        {username: "zameelabdulsammed"}, 
         {
             $set: {
              profilephoto: req.file.location,
