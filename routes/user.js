@@ -4,9 +4,63 @@ const router = express.Router();
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
+const path = require("path");
+
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const client = require("twilio")(config.accountSID,config.authToken);
+const aws = require("aws-sdk");
+const multer = require("multer");
+const multerS3 = require("multer-s3");
+const { s3_bucket_region } = require("../config");
+const s3 = new aws.S3({
+     accessKeyId : config.s3_access_key,
+     secretAccessKey : config.s3_secret_access_key,
+     region : s3_bucket_region,  
+});
+const upload = multer({
+    storage: multerS3({
+        s3,
+        bucket:config.s3_bucket_name,
+        metadata: function (req, file, cb ){
+            cb(null,{fieldName:file.fieldname});
+
+        },
+        key : function (req, file, cb ){
+            cb(null,"image.jpeg"); 
+
+        },
+    }),
+
+});
+
+router.route("/update/profilephoto").patch( middleware.checkToken, upload.single("img"), async (req, res) => {
+    await User.findOneAndUpdate(
+        {_id: req.decoded.uid}, 
+        {
+            $set: {
+             profilephoto: req.file.path,
+        }
+    },
+    (err, user) => {
+        if (err) return res.status(500).json({
+            msg: err
+        });
+        const msg = {
+            msg: "profilephoto updated successfully",
+            data: user ,
+        };
+        return res.json(msg);
+    }
+)
+    
+});
+
+
+
+
+
+
 
 
 router.route("/:username").get(middleware.checkToken, (req, res) => {
