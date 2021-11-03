@@ -4,7 +4,6 @@ const router = express.Router();
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
-const path = require("path");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -39,7 +38,7 @@ router.route("/update/profilephoto").patch( middleware.checkToken, upload.single
         {_id: req.decoded.uid}, 
         {
             $set: {
-             profilephoto: req.file.path,
+             profilephoto: req.file.location,
         }
     },
     (err, user) => {
