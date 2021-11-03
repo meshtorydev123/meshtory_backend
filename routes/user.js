@@ -27,7 +27,7 @@ const upload = multer({
 
         },
         key : function (req, file, cb ){
-            cb(null,"image.jpeg"); 
+            cb(null,`profilephoto-${req.decoded.uid}.jpeg`); 
 
         },
     }),
@@ -36,7 +36,7 @@ const upload = multer({
 
 router.route("/update/profilephoto").patch( middleware.checkToken, upload.single("img"), async (req, res) => {
     await User.findOneAndUpdate(
-        {username: "zameelabdulsammed"}, 
+        {_id: req.decoded.uid}, 
         {
             $set: {
              profilephoto: req.file.path,
