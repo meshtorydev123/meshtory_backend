@@ -1,6 +1,8 @@
 const express = require("express");
 const User = require("../models/users.model");
 const router = express.Router();
+const mongoose = require("mongoose");
+
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
@@ -12,7 +14,6 @@ const aws = require("aws-sdk");
 const multer = require("multer");
 const multerS3 = require("multer-s3");
 const { s3_bucket_region } = require("../config");
-const { db } = require("../models/users.model");
 const s3 = new aws.S3({
      accessKeyId : config.s3_access_key,
      secretAccessKey : config.s3_secret_access_key,
@@ -36,7 +37,7 @@ const upload = multer({
 
 router.route("/update/profilephoto").patch( middleware.checkToken, upload.single("img"), async (req, res) => {
     await User.findOneAndUpdate(
-        {_id: db.ObjectId(req.decoded.uid)}, 
+        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
         {
             $set: {
              profilephoto: req.file.location,
