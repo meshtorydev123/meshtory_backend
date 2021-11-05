@@ -2,11 +2,9 @@ const express = require("express");
 const User = require("../models/users.model");
 const router = express.Router();
 const mongoose = require("mongoose");
-
 const config = require("../config");
 const jwt = require("jsonwebtoken");
 const middleware = require("../middleware");
-
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const client = require("twilio")(config.accountSID,config.authToken);
@@ -55,14 +53,6 @@ router.route("/update/profilephoto").patch( middleware.checkToken, upload.single
 )
     
 });
-
-
-
-
-
-
-
-
 router.route("/:username").get(middleware.checkToken, (req, res) => {
     User.findOne({
             username: req.params.username
@@ -110,8 +100,6 @@ router.route("/verifysms").post((req, res) => {
          });
     
 });
-
-
 router.route("/login").post((req, res) => {
     User.findOne({
             username: req.body.username
@@ -141,7 +129,6 @@ router.route("/login").post((req, res) => {
             
         });
 });
-
 router.route("/register").post((req, res) => {
     console.log("inside the register");
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
@@ -166,7 +153,6 @@ router.route("/register").post((req, res) => {
     
 
 });
-
 router.route("/update/:username").patch(middleware.checkToken, (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
         User.findOneAndUpdate({
@@ -191,7 +177,6 @@ router.route("/update/:username").patch(middleware.checkToken, (req, res) => {
     });
     
 });
-
 router.route("/delete/:username").delete(middleware.checkToken, (req, res) => {
     User.findOneAndDelete({
             username: req.params.username
@@ -208,4 +193,5 @@ router.route("/delete/:username").delete(middleware.checkToken, (req, res) => {
         }
     )
 });
+
 module.exports = router;
