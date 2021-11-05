@@ -2,7 +2,7 @@ module.exports={
     key:"outlook11AtOctober",
     serviceID:"VA053e3cdb6faab6f455aa0341993a3f11",
     accountSID:"AC14e3ffbab94be2219706fd6eebf0146e",
-    authToken:"504cace180cf4444cd354eeec429c1b7",
+    authToken:"e782501cb59ad1627bd1fce8e0f33f76",
     s3_bucket_name:"usersprofilephotos",
     s3_access_key:"AKIAY25YY7JWTVUSYJGC",
     s3_secret_access_key:"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",
