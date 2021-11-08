@@ -33,6 +33,7 @@ const upload = multer({
 
 });
 
+// UPDATE PROFILE DATA 
 router.route("/update/profilephoto").patch( middleware.checkToken, upload.single("img"), async (req, res) => {
     await User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
@@ -75,7 +76,6 @@ router.route("/update/name").patch( middleware.checkToken,  (req, res) => {
 )
     
 });
-
 router.route("/update/gender").patch( middleware.checkToken,  (req, res) => {
     User.findOneAndUpdate(
        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
@@ -98,7 +98,6 @@ router.route("/update/gender").patch( middleware.checkToken,  (req, res) => {
 )
    
 });
-
 router.route("/update/phone").patch( middleware.checkToken,  (req, res) => {
     User.findOneAndUpdate(
        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
@@ -209,20 +208,31 @@ router.route("/update/website").patch( middleware.checkToken,  (req, res) => {
 )
     
 });
-router.route("/:username").get(middleware.checkToken, (req, res) => {
-    User.findOne({
-            username: req.params.username
-        },
-        (err, result) => {
-            if (err) return res.status(500).json({
-                msg: err
-            });
-            res.json({
-                data: result,
-                username: req.params.username
-            });
-        });
+router.route("/update/email").patch( middleware.checkToken,  (req, res) => {
+    User.findOneAndUpdate(
+       {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+       {
+           $set: {
+            email: req.body.email,
+       }
+   },
+   { new: true },
+   (err, user) => {
+       if (err) return res.status(500).json({
+           msg: err
+       });
+       const response = {
+           msg: "email updated successfully",
+           data: user ,
+       };
+       return res.status(200).send(response);
+   }
+)
+   
 });
+// UPDATE PROFILE DATA 
+
+// PHONE OTP
 router.route("/sendsms").post((req, res) => {
     client
          .verify
@@ -256,7 +266,10 @@ router.route("/verifysms").post((req, res) => {
          });
     
 });
-router.route("/login").post((req, res) => {
+// PHONE OTP
+
+//AUTHENTICATION
+router.route("/loginwithusername").post((req, res) => {
     User.findOne({
             username: req.body.username
         },
@@ -266,7 +279,7 @@ router.route("/login").post((req, res) => {
             });
             
             if (result === null) {
-                return res.status(403).json("Username incorrect");
+                return res.status(403).json("Incorrect Username");
             }
             bcrypt.compare(req.body.password, result.password, function(errb, resultb) {
                 if ( resultb=== true) {
@@ -278,7 +291,7 @@ router.route("/login").post((req, res) => {
                     res.json({token :token,
                     msg:"success"});
                 } else {
-                    res.status(403).json("Password is incorrect");
+                    res.status(403).json("Incorrect password");
                 }
                 
             });
@@ -286,7 +299,6 @@ router.route("/login").post((req, res) => {
         });
 });
 router.route("/register").post((req, res) => {
-    console.log("inside the register");
     bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
         const user = new User({
             name: req.body.name,
@@ -298,7 +310,7 @@ router.route("/register").post((req, res) => {
             .save()
             .then(() => {
                 console.log("user registered");
-                res.status(200).json("ok");
+                res.status(200).json("User register successful");
             })
             .catch((err) => {
                 res.status(403).json({
@@ -309,10 +321,10 @@ router.route("/register").post((req, res) => {
     
 
 });
-router.route("/update/changepassword/:username").patch(middleware.checkToken, (req, res) => {
+router.route("/update/forgottenpasswordwithusername").patch(middleware.checkToken, (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
         User.findOneAndUpdate({
-            username: req.params.username
+            username: req.body.username
         }, {
             $set: {
                 
@@ -325,7 +337,7 @@ router.route("/update/changepassword/:username").patch(middleware.checkToken, (r
             });
             const msg = {
                 msg: "password successfully updated",
-                username: req.params.username,
+                username: req.body.username,
             };
             return res.json(msg);
         }
@@ -333,10 +345,63 @@ router.route("/update/changepassword/:username").patch(middleware.checkToken, (r
     });
     
 });
-router.route("/delete/:username").delete(middleware.checkToken, (req, res) => {
-    User.findOneAndDelete({
-            username: req.params.username
-        },
+router.route("/update/changepassword/").patch(middleware.checkToken, (req, res) => {
+    User.findOne({_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+    (err, result) => {
+        if (err) return res.status(500).json({
+            msg: err
+        });
+        
+        bcrypt.compare(req.body.password, result.password, function(errb, resultb) {
+            if ( resultb=== true) {
+                let token = jwt.sign({
+                    uid: result._id
+                }, config.key, {
+                    expiresIn: "24h"
+                });
+                res.json({token :token,
+                msg:"success"});
+
+
+                bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
+                    User.updateOne( {
+                        $set: {
+                            
+                            password: hash,
+                        }
+                    },
+                    (err, result) => {
+                        if (err) return res.status(500).json({
+                            msg: err
+                        });
+                        const msg = {
+                            msg: "password successfully updated",
+                            data: result,
+                        };
+                        return res.json(msg);
+                    }
+                )
+                });
+            
+
+
+
+
+            } else {
+                res.status(403).json("Your old password was entered incorrectly. Please enter it again");
+            }
+            
+        });
+        
+    });
+    
+    
+});
+//AUTHENTICATION
+
+//DEACTIVATE ACCOUNT
+router.route("/delete").delete(middleware.checkToken, (req, res) => {
+    User.findOneAndDelete({_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
         (err, result) => {
             if (err) return res.status(500).json({
                 msg: err
@@ -349,5 +414,28 @@ router.route("/delete/:username").delete(middleware.checkToken, (req, res) => {
         }
     )
 });
+//DEACTIVATE ACCOUNT
+
+
+
+
+router.route("/:username").get(middleware.checkToken, (req, res) => {
+    User.findOne({
+            username: req.params.username
+        },
+        (err, result) => {
+            if (err) return res.status(500).json({
+                msg: err
+            });
+            res.json({
+                data: result,
+                username: req.params.username
+            });
+        });
+});
+
+
+
+
 
 module.exports = router;

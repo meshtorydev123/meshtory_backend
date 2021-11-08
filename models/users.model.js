@@ -30,6 +30,11 @@ const User = Schema({
         default:""
 
     },
+    email:{
+        type:String,
+        default:""
+
+    },
 
     gender:{
         type:String,
