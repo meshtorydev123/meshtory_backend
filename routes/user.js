@@ -53,6 +53,75 @@ router.route("/update/profilephoto").patch( middleware.checkToken, upload.single
 )
     
 });
+router.route("/update/name").patch( middleware.checkToken,  (req, res) => {
+    await User.findOneAndUpdate(
+        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+        {
+            $set: {
+             name: req.body.name,
+        }
+    },
+    { new: true },
+    (err, user) => {
+        if (err) return res.status(500).json({
+            msg: err
+        });
+        const response = {
+            msg: "name updated successfully",
+            data: user ,
+        };
+        return res.status(200).send(response);
+    }
+)
+    
+});
+
+router.route("/update/bio").patch( middleware.checkToken,  (req, res) => {
+    await User.findOneAndUpdate(
+        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+        {
+            $set: {
+             bio: req.body.bio,
+        }
+    },
+    { new: true },
+    (err, user) => {
+        if (err) return res.status(500).json({
+            msg: err
+        });
+        const response = {
+            msg: "bio updated successfully",
+            data: user ,
+        };
+        return res.status(200).send(response);
+    }
+)
+    
+});
+
+router.route("/update/website").patch( middleware.checkToken,  (req, res) => {
+    await User.findOneAndUpdate(
+        {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+        {
+            $set: {
+             website: req.body.website,
+        }
+    },
+    { new: true },
+    (err, user) => {
+        if (err) return res.status(500).json({
+            msg: err
+        });
+        const response = {
+            msg: "website updated successfully",
+            data: user ,
+        };
+        return res.status(200).send(response);
+    }
+)
+    
+});
+
 router.route("/:username").get(middleware.checkToken, (req, res) => {
     User.findOne({
             username: req.params.username
@@ -153,7 +222,7 @@ router.route("/register").post((req, res) => {
     
 
 });
-router.route("/update/:username").patch(middleware.checkToken, (req, res) => {
+router.route("/update/changepassword/:username").patch(middleware.checkToken, (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
         User.findOneAndUpdate({
             username: req.params.username
