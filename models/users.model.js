@@ -25,12 +25,12 @@ const User = Schema({
 
     },
 
-    bio:{
+    dob:{
         type:String,
         default:""
 
     },
-    
+
     gender:{
         type:String,
         default:""
