@@ -352,7 +352,7 @@ router.route("/update/changepassword/").patch(middleware.checkToken, (req, res) 
             msg: err
         });
         
-        bcrypt.compare(req.body.password, result.password, function(errb, resultb) {
+        bcrypt.compare(req.body.oldpassword, result.password, function(errb, resultb) {
             if ( resultb=== true) {
                 let token = jwt.sign({
                     uid: result._id
@@ -362,7 +362,7 @@ router.route("/update/changepassword/").patch(middleware.checkToken, (req, res) 
                 
 
 
-                bcrypt.hash(req.body.oldpassword, saltRounds, function(errb, hash) {
+                bcrypt.hash(req.body.newpassword, saltRounds, function(errb, hash) {
                     User.updateOne( {
                         $set: {
                             
