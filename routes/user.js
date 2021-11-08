@@ -54,7 +54,7 @@ router.route("/update/profilephoto").patch( middleware.checkToken, upload.single
     
 });
 router.route("/update/name").patch( middleware.checkToken,  (req, res) => {
-    await User.findOneAndUpdate(
+     User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
         {
             $set: {
@@ -77,7 +77,7 @@ router.route("/update/name").patch( middleware.checkToken,  (req, res) => {
 });
 
 router.route("/update/bio").patch( middleware.checkToken,  (req, res) => {
-    await User.findOneAndUpdate(
+     User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
         {
             $set: {
@@ -100,7 +100,7 @@ router.route("/update/bio").patch( middleware.checkToken,  (req, res) => {
 });
 
 router.route("/update/website").patch( middleware.checkToken,  (req, res) => {
-    await User.findOneAndUpdate(
+     User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
         {
             $set: {
