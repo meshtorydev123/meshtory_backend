@@ -76,6 +76,95 @@ router.route("/update/name").patch( middleware.checkToken,  (req, res) => {
     
 });
 
+router.route("/update/gender").patch( middleware.checkToken,  (req, res) => {
+    User.findOneAndUpdate(
+       {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+       {
+           $set: {
+            gender: req.body.gender,
+       }
+   },
+   { new: true },
+   (err, user) => {
+       if (err) return res.status(500).json({
+           msg: err
+       });
+       const response = {
+           msg: "gender updated successfully",
+           data: user ,
+       };
+       return res.status(200).send(response);
+   }
+)
+   
+});
+
+router.route("/update/phone").patch( middleware.checkToken,  (req, res) => {
+    User.findOneAndUpdate(
+       {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+       {
+           $set: {
+            phone: req.body.phone,
+       }
+   },
+   { new: true },
+   (err, user) => {
+       if (err) return res.status(500).json({
+           msg: err
+       });
+       const response = {
+           msg: "phone updated successfully",
+           data: user ,
+       };
+       return res.status(200).send(response);
+   }
+)
+   
+});
+router.route("/update/email").patch( middleware.checkToken,  (req, res) => {
+    User.findOneAndUpdate(
+       {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+       {
+           $set: {
+            email: req.body.email,
+       }
+   },
+   { new: true },
+   (err, user) => {
+       if (err) return res.status(500).json({
+           msg: err
+       });
+       const response = {
+           msg: "email updated successfully",
+           data: user ,
+       };
+       return res.status(200).send(response);
+   }
+)
+   
+});
+router.route("/update/dob").patch( middleware.checkToken,  (req, res) => {
+    User.findOneAndUpdate(
+       {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
+       {
+           $set: {
+            dob: req.body.dob,
+       }
+   },
+   { new: true },
+   (err, user) => {
+       if (err) return res.status(500).json({
+           msg: err
+       });
+       const response = {
+           msg: "dob updated successfully",
+           data: user ,
+       };
+       return res.status(200).send(response);
+   }
+)
+   
+});
 router.route("/update/bio").patch( middleware.checkToken,  (req, res) => {
      User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
@@ -98,7 +187,6 @@ router.route("/update/bio").patch( middleware.checkToken,  (req, res) => {
 )
     
 });
-
 router.route("/update/website").patch( middleware.checkToken,  (req, res) => {
      User.findOneAndUpdate(
         {_id: mongoose.Types.ObjectId(req.decoded.uid)}, 
@@ -121,7 +209,6 @@ router.route("/update/website").patch( middleware.checkToken,  (req, res) => {
 )
     
 });
-
 router.route("/:username").get(middleware.checkToken, (req, res) => {
     User.findOne({
             username: req.params.username
