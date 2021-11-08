@@ -359,11 +359,10 @@ router.route("/update/changepassword/").patch(middleware.checkToken, (req, res) 
                 }, config.key, {
                     expiresIn: "24h"
                 });
-                res.json({token :token,
-                msg:"success"});
+                
 
 
-                bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
+                bcrypt.hash(req.body.oldpassword, saltRounds, function(errb, hash) {
                     User.updateOne( {
                         $set: {
                             
