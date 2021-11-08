@@ -321,7 +321,7 @@ router.route("/register").post((req, res) => {
     
 
 });
-router.route("/update/forgottenpasswordwithusername").patch(middleware.checkToken, (req, res) => {
+router.route("/update/forgottenpasswordwithusername").patch( (req, res) => {
     bcrypt.hash(req.body.password, saltRounds, function(errb, hash) {
         User.findOneAndUpdate({
             username: req.body.username
