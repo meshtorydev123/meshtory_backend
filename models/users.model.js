@@ -24,6 +24,11 @@ const User = Schema({
         default:""
 
     },
+    gender:{
+        type:String,
+        default:""
+
+    },
     website:{
         type:String,
         default:""
