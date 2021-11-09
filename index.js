@@ -2,26 +2,27 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const config = require("./config");
-
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
 const postgresql = require('pg');
+const { Client } = require('pg');
+const postgresql = new Client({
+    host: config.postgresql_db_host,
+    user: config.postgresql_db_user,
+    password: config.postgresql_db_password,
+    port: config.postgresql_db_port,
+    database:config.postgresql_db
+  });
 
-var postgresqlconnection = postgresql.Connection({
-  host     : config.postgresql_db_host,
-  user     : config.postgresql_db_user,
-  password : config.postgresql_db_password,
-  port     : config.postgresql_db_port,
-});
+postgresql.connect(function(err) {
+    if (err) {
+      console.error('Database connection failed: ' + err.stack);
+      return;
+    }
+  
+    console.log('Connected to PostgreSQLdatabase.');
+  });
 
-postgresqlconnection.connect(function(err) {
-  if (err) {
-    console.error('Database connection failed: ' + err.stack);
-    return;
-  }
-
-  console.log('Connected to PostgreSQLdatabase.');
-});
 
 
 

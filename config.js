@@ -8,7 +8,7 @@ module.exports={
     s3_secret_access_key:"4Yt7KeQkjbaJ6wA2cufkwipLbbn9MIdj6rKpkd3o",
     s3_bucket_region:"ap-south-1",
     postgresql_db_host: "meshtorydbinstance.cuuphlf8ffcf.ap-south-1.rds.amazonaws.com",
-    Ppostgresql_db_port: "5432",
+    postgresql_db_port: "5432",
     postgresql_db_user: "zameel",
     postgresql_db_password: "Outlookthreeonefour",
     postgresql_db: "meshtoryDB",
