@@ -4,7 +4,6 @@ const app = express();
 const config = require("./config");
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
-const postgresql = require('pg');
 const { Client } = require('pg');
 const postgresql = new Client({
     host: config.postgresql_db_host,
