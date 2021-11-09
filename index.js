@@ -15,7 +15,7 @@ const postgresql = new Client({
 
 postgresql.connect(function(err) {
     if (err) {
-      console.error('Database connection failed: ' + err.stack);
+      console.log('Database connection failed: ' + err.stack);
       return;
     }
   
