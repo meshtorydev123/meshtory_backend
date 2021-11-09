@@ -13,16 +13,13 @@ const postgresql = new Client({
     database:config.postgresql_db,
   });
 
-postgresql.connect( {
-    useNewUrlParser: true,
-    useUnifiedTopology:true,
-    
-});
+postgresql.connect(function (err) {
+    if (err) {
+        console.log('Database connection failed: ' + err.stack);
+        return;
+    }
 
-const pgconnection = postgresql.connection;
-pgconnection.once("open",()=>{
-    console.log("PG connected"); 
-
+    console.log('Connected to PostgreSQLdatabase.');
 });
  
 
