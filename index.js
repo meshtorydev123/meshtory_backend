@@ -5,7 +5,7 @@ const port = process.env.port || 314;
 const userRoute = require("./routes/user");
 const postgresql = require('pg');
 
-var postgresqlconnection = mysql.createConnection({
+var postgresqlconnection = postgresql.createConnection({
   host     : config.postgresql_db_host,
   user     : config.postgresql_db_user,
   password : config.postgresql_db_password,
