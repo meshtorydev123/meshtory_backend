@@ -10,7 +10,7 @@ module.exports={
     postgresql_db_host: "meshtorydbinstance.cuuphlf8ffcf.ap-south-1.rds.amazonaws.com",
     postgresql_db_port: "5432",
     postgresql_db_user: "zameel",
-    postgresql_db_password: "Outlookthreeonefour",
+    postgresql_db_password: "outlookthreeonefour",
     postgresql_db: "meshtoryDB",
 
     
