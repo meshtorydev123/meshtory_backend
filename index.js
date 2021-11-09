@@ -1,19 +1,35 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const config = require("./config");
+//const config = require("./config");
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
-const { Client } = require('pg');
-const postgresql = new Client({
-    host: config.postgresql_db_host,
-    user: config.postgresql_db_user,
-    port: config.postgresql_db_port,
-    password: config.postgresql_db_password,
-    database:config.postgresql_db,
-  });
+//const { Client } = require('pg');
 
-postgresql.connect(function (err) {
+// const postgresql = new Client({
+//     host: config.postgresql_db_host,
+//     user: config.postgresql_db_user,
+//     port: config.postgresql_db_port,
+//     password: config.postgresql_db_password,
+//     database:config.postgresql_db,
+//   });
+
+
+// postgresql.connect(function (err) {
+//     if (err) {
+//         console.log('Database connection failed: ' + err.stack);
+//         return;
+//     }
+
+//     console.log('Connected to PostgreSQLdatabase.');
+// });
+ 
+
+const pg = require('pg');
+const conString = "postgres://zameel:Outlookthreeonefour@meshtorydbinstance.cuuphlf8ffcf.ap-south-1.rds.amazonaws.com:5432/meshtoryDB";
+
+const client = new pg.Client(conString);
+client.connect(function (err) {
     if (err) {
         console.log('Database connection failed: ' + err.stack);
         return;
@@ -21,7 +37,7 @@ postgresql.connect(function (err) {
 
     console.log('Connected to PostgreSQLdatabase.');
 });
- 
+
 
 
 
