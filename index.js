@@ -3,6 +3,27 @@ const mongoose = require("mongoose");
 const app = express();
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
+const postgresql = require('pg');
+
+var postgresqlconnection = mysql.createConnection({
+  host     : config.postgresql_db_host,
+  user     : config.postgresql_db_user,
+  password : config.postgresql_db_password,
+  port     : config.postgresql_db_port,
+});
+
+postgresqlconnection.connect(function(err) {
+  if (err) {
+    console.error('Database connection failed: ' + err.stack);
+    return;
+  }
+
+  console.log('Connected to PostgreSQLdatabase.');
+});
+
+
+
+
 
 
 mongoose.connect("mongodb+srv://zameelabdulsammed:Outlookthreeonefour@meshtorycluster.xle7t.mongodb.net/meshtoryMDB?retryWrites=true&w=majority", {
