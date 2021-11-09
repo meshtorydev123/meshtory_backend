@@ -5,7 +5,7 @@ const config = require("./config");
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
 const { Client } = require('pg');
-const postgresql = new Client({
+const client = new Client({
     host: config.postgresql_db_host,
     user: config.postgresql_db_user,
     password: config.postgresql_db_password,
@@ -13,7 +13,7 @@ const postgresql = new Client({
     database:config.postgresql_db
   });
 
-postgresql.connect(function(err) {
+  client.connect(function(err) {
     if (err) {
       console.log('Database connection failed: ' + err.stack);
       return;
@@ -22,7 +22,7 @@ postgresql.connect(function(err) {
     console.log('Connected to PostgreSQLdatabase.');
   });
 
-postgresql.end();  
+  client.end();  
 
 
 
