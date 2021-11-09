@@ -5,24 +5,23 @@ const config = require("./config");
 const port = process.env.port || 314;
 const userRoute = require("./routes/user");
 const { Client } = require('pg');
-const client = new Client({
+const postgresql = new Client({
     host: config.postgresql_db_host,
     user: config.postgresql_db_user,
-    password: config.postgresql_db_password,
     port: config.postgresql_db_port,
-    database:config.postgresql_db
+    password: config.postgresql_db_password,
+    database:config.postgresql_db,
   });
 
-  client.connect(function(err) {
+postgresql.connect(function (err) {
     if (err) {
-      console.log('Database connection failed: ' + err.stack);
-      return;
+        console.log('Database connection failed: ' + err.stack);
+        return;
     }
-  
-    console.log('Connected to PostgreSQLdatabase.');
-  });
 
-  client.end();  
+    console.log('Connected to PostgreSQLdatabase.');
+});
+ 
 
 
 
