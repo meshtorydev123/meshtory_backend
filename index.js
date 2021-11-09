@@ -13,12 +13,16 @@ const postgresql = new Client({
     database:config.postgresql_db,
   });
 
-postgresql.connect();
+postgresql.connect(function (err) {
+    if (err) {
+        console.log('Database connection failed: ' + err.stack);
+        return;
+    }
+
+    console.log('Connected to PostgreSQLdatabase.');
+});
  
-postgresql.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-    console.log(err ? err.stack : res.rows[0].message) // Hello World!
-    client.end()
-  })
+
 
 
 
