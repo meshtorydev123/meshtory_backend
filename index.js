@@ -22,6 +22,8 @@ postgresql.connect(function(err) {
     console.log('Connected to PostgreSQLdatabase.');
   });
 
+postgresql.end();  
+
 
 
 
